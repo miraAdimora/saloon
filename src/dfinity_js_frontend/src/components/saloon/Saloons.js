@@ -6,7 +6,7 @@ import { Row,Badge } from "react-bootstrap";
 import AddSaloon from "./AddSaloon";
 import { NotificationSuccess, NotificationError } from "../utils/Notifications";
 import {
-  getSaloons as getSaloonList, createSaloon, deleteShoe
+  getSaloons as getSaloonList, createSaloon, deleteSaloon
 } from "../../utils/marketplace";
 
 
@@ -29,12 +29,12 @@ const Saloons = () => {
 
 
  // function that delete a shoe by the shoe id
-  const deleteShoe = async (id) => {
+  const deleteSaloonId = async (id) => {
     try {
       setLoading(true);
       toast(<NotificationSuccess text="please wait your request is been processed." />);
-      deleteShoe(id).then((resp) => {
-        toast(<NotificationSuccess text="Shoe deleted successfully." />);
+      deleteSaloon(id).then((resp) => {
+        toast(<NotificationSuccess text="Saloon deleted successfully." />);
         getSaloon();
       });
     } catch (error) {
@@ -45,7 +45,7 @@ const Saloons = () => {
   };
 
 
-  // add shoe to the store
+  // add Saloon
   const addSaloon = async (data) => {
     try {
       setLoading(true);
@@ -75,8 +75,8 @@ const Saloons = () => {
     <>
       {!loading ? (
         <>
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            {/* <h1 className="fs-4 fw-bold mb-0">Saloon</h1> */}
+          <div className="d-flex justify-content-between align-items-right mb-4">
+            <h1 className="fs-4 fw-bold mb-0"></h1>
             <AddSaloon save={addSaloon} />
           </div>
  
@@ -87,8 +87,7 @@ const Saloons = () => {
                 saloon={{
                   ..._saloon,
                 }}
-                // buy={buy}
-                // deleteShoe = {deleteShoe}
+                deleteSaloonId = {deleteSaloonId}
                 // likeShoes = {likeShoes}
               />    
               </div>

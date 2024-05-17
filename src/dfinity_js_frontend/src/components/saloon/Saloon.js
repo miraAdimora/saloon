@@ -3,6 +3,7 @@ import { useState } from 'react';
 import PropTypes from "prop-types";
 import { Card, Button, Col, Badge, Stack } from "react-bootstrap";
 import { FaHeart, FaTrash } from "react-icons/fa";
+import { TiDelete } from "react-icons/ti"
 import Modal from 'react-bootstrap/Modal';
 import { Principal } from "@dfinity/principal";
 // import {
@@ -10,15 +11,12 @@ import { Principal } from "@dfinity/principal";
 // } from "../../utils/saloon";
 // import AddComment from "./AddComment";
 
-const Saloon = ({ saloon }) => {
+const Saloon = ({ saloon, deleteSaloonId }) => {
 
   const [show, setShow] = useState(false);
-  // const [show1, setShow1] = useState(false);
 
   const handleClose = () => setShow(false);
-  // const handleClose1 = () => setShow1(false);
   const handleShow = () => setShow(true);
-  // const handleShow1 = () => setShow1(true);
 
   const { id, name, description, location, imageURL, owner } =
   saloon;
@@ -31,7 +29,7 @@ const Saloon = ({ saloon }) => {
   // };
 
   const triggerDelete = () => {
-    deleteShoe(id);
+    deleteSaloonId(id);
   };
   // const triggerLike = () => {
   //   likeShoes(id);
@@ -42,7 +40,7 @@ const Saloon = ({ saloon }) => {
       <Card className=" h-100">
         <Card.Header>
           <Stack direction="horizontal" gap={2}>
-            <FaTrash onClick={triggerDelete} style={{color: "red", cursor:"pointer",fontSize:"22px"}}/>
+            <TiDelete onClick={triggerDelete} style={{color: "red", cursor:"pointer",fontSize:"25px"}}/>
             {/* <Badge bg="secondary" className="ms-auto">
               {soldAmount.toString()} Sold
             </Badge> */}
@@ -124,7 +122,6 @@ const Saloon = ({ saloon }) => {
 
 Saloon.propTypes = {
   saloon: PropTypes.instanceOf(Object).isRequired,
-  // buy: PropTypes.func.isRequired,
 };
 
 export default Saloon;

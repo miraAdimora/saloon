@@ -65,7 +65,6 @@ const saloonStorage = StableBTreeMap(0, text, Saloon);
 const serviceStorage = StableBTreeMap(0, text, ServiceRendered);
 
 
-// const ORDER_RESERVATION_PERIOD = 120n;
 
 // Define the Ledger canister
 const icpCanister = Ledger(Principal.fromText("ryjl3-tyaaa-aaaaa-aaaba-cai"));
@@ -110,6 +109,46 @@ export default Canister({
     }
     ),
 
+      // Create an Ingredient
+      addServices: update([ServiceRenderedPayload], Result(ServiceRendered, Message), (payload) => {
+        if (typeof payload !== "object" || Object.keys(payload).length === 0) {
+            return Err({ InvalidPayload: "invalid payoad" })
+        }
+        const services = { id: uuidv4(), ...payload };
+        serviceStorage.insert(services.id, services);
+        return Ok(services);
+    }
+    ),
+
+    
+    // insert an ingredient into a recipe
+    addServicesToSaloon: update([text, text], Result(Saloon, Message), (saloonId, serviceId) => {
+        const saloonOpt = saloonStorage.get(saloonId);
+        if ("None" in saloonOpt) {
+            return Err({ NotFound: `cannot add ingredient to recipe: recipe with id=${saloonId} not found` });
+        }
+        const serviceOpt = serviceStorage.get(serviceId);
+        if ("None" in serviceOpt) {
+            return Err({ NotFound: `cannot add ingredient to recipe: ingredient with id=${serviceId} not found` });
+        }
+        saloonOpt.Some.services.push(serviceOpt.Some);
+        saloonStorage.insert(saloonId, saloonOpt.Some);
+        return Ok(saloonOpt.Some);
+    }
+    ),
+
+    searchSaloon: query([text], Result(Vec(Saloon), Message), (searchTerm) => {
+        const lowerCaseSearchInput = searchTerm.toLowerCase();
+        try {
+            const searched = saloonStorage.values().filter((saloon) => saloon.name.toLowerCase().includes(lowerCaseSearchInput) ||
+             saloon.location.toLowerCase().includes(lowerCaseSearchInput));
+            return Ok(searched);
+        } catch (error) {
+            return Err({ NotFound: `Saloon with the term ${searchTerm} has not been found` });
+        }
+    }
+    ),
+
   
 
 
@@ -120,11 +159,6 @@ export default Canister({
 
  
 })
-
-
-
-
-
 
 
 
