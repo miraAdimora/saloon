@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
 
-const AddShoe = ({ save }) => {
+const AddSaloon = ({ save }) => {
   const [name, setName] = useState("");
-  const [shoeURL, setImage] = useState("");
-  const [description, setDescription] = useState("");
-  const [size, setSize] = useState("");
+  const [imageURL, setImage] = useState("");
   const [location, setLocation] = useState("");
-  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState("");
 
-  const isFormFilled = () => name && shoeURL && description && size && location && price;
+  const isFormFilled = () => name && imageURL && description && location ;
 
   const [show, setShow] = useState(false);
 
@@ -29,13 +27,13 @@ const AddShoe = ({ save }) => {
       </Button>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>New Shoe</Modal.Title>
+          <Modal.Title>New Saloon</Modal.Title>
         </Modal.Header>
         <Form>
           <Modal.Body>
             <FloatingLabel
               controlId="inputName"
-              label="Shoe name"
+              label="Saloon name"
               className="mb-3"
             >
               <Form.Control
@@ -43,7 +41,7 @@ const AddShoe = ({ save }) => {
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
-                placeholder="Enter name of shoe"
+                placeholder="Enter saloon name "
               />
             </FloatingLabel>
             <FloatingLabel
@@ -74,19 +72,6 @@ const AddShoe = ({ save }) => {
               />
             </FloatingLabel>
             <FloatingLabel
-              controlId="inputSize"
-              label="Shoe size"
-              className="mb-3"
-            >
-              <Form.Control
-                type="text"
-                onChange={(e) => {
-                  setSize(e.target.value);
-                }}
-                placeholder="Enter size of shoe"
-              />
-            </FloatingLabel>
-            <FloatingLabel
               controlId="inputLocation"
               label="Location"
               className="mb-3"
@@ -96,20 +81,6 @@ const AddShoe = ({ save }) => {
                 placeholder="Location"
                 onChange={(e) => {
                   setLocation(e.target.value);
-                }}
-              />
-            </FloatingLabel>
-          
-            <FloatingLabel
-              controlId="inputPrice"
-              label="Price"
-              className="mb-3"
-            >
-              <Form.Control
-                type="text"
-                placeholder="Price"
-                onChange={(e) => {
-                  setPrice(e.target.value);
                 }}
               />
             </FloatingLabel>
@@ -125,16 +96,14 @@ const AddShoe = ({ save }) => {
             onClick={() => {
               save({
                 name,
-                shoeURL,
+                imageURL,
                 description,
-                size,
                 location,
-                price,
               });
               handleClose();
             }}
           >
-            Save shoe
+            Save saloon
           </Button>
         </Modal.Footer>
       </Modal>
@@ -142,8 +111,8 @@ const AddShoe = ({ save }) => {
   );
 };
 
-AddShoe.propTypes = {
+AddSaloon.propTypes = {
   save: PropTypes.func.isRequired,
 };
 
-export default AddShoe;
+export default AddSaloon;

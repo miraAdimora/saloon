@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useState } from "react";
-import Shoes from "./components/marketplace/Shoes";
 import "./App.css";
 import coverImg from "./assets/img/shoe.jpg";
 import { login, logout as destroy } from "./utils/auth";
 import Cover from "./components/utils/Cover";
 import { Notification } from "./components/utils/Notifications";
+import Saloons from "./components/saloon/Saloons";
 import ShoeNav from "./components/NavBar";
 // import Index from "./components/footer";
 
@@ -17,10 +17,10 @@ const App = function AppWrapper() {
             <Notification />
             {isAuthenticated ? (
                 <div>
-                    <ShoeNav />
-                    <br />
+                     <ShoeNav />
+                    <br /> 
                     <main>
-                        <Shoes />
+                        <Saloons />
                     </main>
                     {/* <Index /> */}
                 </div>

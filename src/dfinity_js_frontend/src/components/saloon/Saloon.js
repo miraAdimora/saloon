@@ -5,49 +5,37 @@ import { Card, Button, Col, Badge, Stack } from "react-bootstrap";
 import { FaHeart, FaTrash } from "react-icons/fa";
 import Modal from 'react-bootstrap/Modal';
 import { Principal } from "@dfinity/principal";
-import {
-  insertComment
-} from "../../utils/marketplace";
-import AddComment from "./AddComment";
+// import {
+//   insertComment
+// } from "../../utils/saloon";
+// import AddComment from "./AddComment";
 
-const Shoe = ({ shoe, buy, deleteShoe, likeShoes }) => {
+const Saloon = ({ saloon }) => {
 
   const [show, setShow] = useState(false);
-  const [show1, setShow1] = useState(false);
+  // const [show1, setShow1] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleClose1 = () => setShow1(false);
+  // const handleClose1 = () => setShow1(false);
   const handleShow = () => setShow(true);
-  const handleShow1 = () => setShow1(true);
+  // const handleShow1 = () => setShow1(true);
 
-  const { id, price, name, description, location, shoeURL,like, size, seller, soldAmount, comments } =
-    shoe;
+  const { id, name, description, location, imageURL, owner } =
+  saloon;
 
 
-    const addComment = async (shoeCommentId, comment) => {
-      try {
-          insertComment(shoeCommentId, comment).then
-          ((resp) => {
-              console.log({ resp });
-          });
-          window.location.reload();
-          toast(<NotificationSuccess text="Comment added successfully." />);
-      } catch (error) {
-          console.log({ error });
-          toast(<NotificationError text="Failed to create a Comment." />);
-      } 
-  };
+    
 
-  const triggerBuy = () => {
-    buy(id);
-  };
+  // const triggerBuy = () => {
+  //   buy(id);
+  // };
 
   const triggerDelete = () => {
     deleteShoe(id);
   };
-  const triggerLike = () => {
-    likeShoes(id);
-  };
+  // const triggerLike = () => {
+  //   likeShoes(id);
+  // };
 
   return (
     <Col key={id}>
@@ -55,22 +43,22 @@ const Shoe = ({ shoe, buy, deleteShoe, likeShoes }) => {
         <Card.Header>
           <Stack direction="horizontal" gap={2}>
             <FaTrash onClick={triggerDelete} style={{color: "red", cursor:"pointer",fontSize:"22px"}}/>
-            <Badge bg="secondary" className="ms-auto">
+            {/* <Badge bg="secondary" className="ms-auto">
               {soldAmount.toString()} Sold
-            </Badge>
+            </Badge> */}
           </Stack>
         </Card.Header>
         <div className=" ratio ratio-4x3">
-          <img src={shoeURL} alt={name} style={{ objectFit: "cover" }} />
+          <img src={imageURL} alt={name} style={{ objectFit: "cover" }} />
         </div>
         <Card.Body className="d-flex  flex-column text-center">
   
-  <div style={{ display:'flex',alignItems: "left" }}>
+  {/* <div style={{ display:'flex',alignItems: "left" }}>
     <FaHeart style={{ color: "red", cursor: "pointer", fontSize: '20px' }} onClick={triggerLike}/>
     <span style={{ fontWeight: "bold" }}>{like}</span>
-  </div>
+  </div> */}
       <Button variant="success" onClick={handleShow}>
-        View shoe details
+        View saloon details
       </Button>
       
       <Modal show={show} onHide={handleClose}>
@@ -79,17 +67,12 @@ const Shoe = ({ shoe, buy, deleteShoe, likeShoes }) => {
         </Modal.Header>
         <Modal.Body>
         <div className=" ratio ratio-4x3">
-          <img src={shoeURL} alt={name} style={{ objectFit: "cover" }} />
+          <img src={imageURL} alt={name} style={{ objectFit: "cover" }} />
         </div>
         <Card.Title>{name}</Card.Title>
           
             <div className="text-uppercase fw-bold text-secondary text-sm">Description: </div>
-            <span>{description}</span>
-           
-          <div> 
-            <span className="text-uppercase fw-bold text-secondary">Size: </span>
-            <span>{size}</span>
-          </div>    
+            <span>{description}</span>    
           <div>  
              <div className="text-uppercase fw-bold text-secondary">Location: </div>
              <span>{location} </span> 
@@ -97,13 +80,13 @@ const Shoe = ({ shoe, buy, deleteShoe, likeShoes }) => {
                   
           
           <Card.Text className="text-secondary">
-            <span>{Principal.from(seller).toText()}</span>
+            <span>{Principal.from(owner).toText()}</span>
           </Card.Text>
          
         </Modal.Body>
         <Modal.Footer>
          
-          <Button
+          {/* <Button
             variant="outline-dark"
             onClick={triggerBuy}
             className="w-100 py-3"
@@ -129,10 +112,8 @@ const Shoe = ({ shoe, buy, deleteShoe, likeShoes }) => {
                     </Button>
                    
                 </Modal.Footer>
-        </Modal>
-
-         
-        </Modal.Footer>
+        </Modal>*/}
+        </Modal.Footer> 
       </Modal>
  
         </Card.Body>
@@ -141,9 +122,9 @@ const Shoe = ({ shoe, buy, deleteShoe, likeShoes }) => {
   );
 };
 
-Shoe.propTypes = {
-  shoe: PropTypes.instanceOf(Object).isRequired,
-  buy: PropTypes.func.isRequired,
+Saloon.propTypes = {
+  saloon: PropTypes.instanceOf(Object).isRequired,
+  // buy: PropTypes.func.isRequired,
 };
 
-export default Shoe;
+export default Saloon;

@@ -32,7 +32,7 @@ import { balance as principalBalance } from "../../utils/ledger"
         <>
         <Navbar expand="md" className="shadow">
           <NavbarBrand style={{ fontWeight: 'bold', color: 'rgb(38, 69, 100)' }}>
-            SHOESTORE
+            MISALOONjhkhihiuhi
           </NavbarBrand>
           <Nav navbar>
             <NavItem>
