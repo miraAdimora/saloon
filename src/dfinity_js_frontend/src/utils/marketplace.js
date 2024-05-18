@@ -11,6 +11,26 @@ export async function deleteSaloon(id) {
     return window.canister.marketplace.deleteSaloon(id);
 }
 
+// searchRecipes
+export async function searchSaloons(query) {
+    return window.canister.marketplace.searchSaloons(query);
+  }
+
+// add service
+export async function createService(service) {
+    return window.canister.marketplace.addServices(service);
+  }  
+
+  // get services
+export async function getServices() {
+    return await window.canister.marketplace.getServices();
+  }
+
+ // add Service To saloon
+export async function insertServicesToSaloon(saloonId, serviceId) {
+    return window.canister.marketplace.insertServicesToSaloon(saloonId, serviceId);
+  } 
+
 // // like a shoe
 // export async function likeShoe(id) {
 //     return window.canister.marketplace.likeShoe(id);

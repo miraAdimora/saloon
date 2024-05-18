@@ -6,31 +6,27 @@ import { FaHeart, FaTrash } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti"
 import Modal from 'react-bootstrap/Modal';
 import { Principal } from "@dfinity/principal";
-// import {
-//   insertComment
-// } from "../../utils/saloon";
-// import AddComment from "./AddComment";
+import InsertServices from "./InsertServiceToSaloon";
+
 
 const Saloon = ({ saloon, deleteSaloonId }) => {
 
   const [show, setShow] = useState(false);
+  const [serviceshow, setServiceShow] = useState(false);
 
   const handleClose = () => setShow(false);
+  const handleServiceClose = () => setServiceShow(false);
   const handleShow = () => setShow(true);
+  const handleServiceShow = () => setServiceShow(true);
 
-  const { id, name, description, location, imageURL, owner } =
+  const { id, name, location, imageURL,services, owner } =
   saloon;
 
-
-    
-
-  // const triggerBuy = () => {
-  //   buy(id);
-  // };
 
   const triggerDelete = () => {
     deleteSaloonId(id);
   };
+  
   // const triggerLike = () => {
   //   likeShoes(id);
   // };
@@ -41,79 +37,45 @@ const Saloon = ({ saloon, deleteSaloonId }) => {
         <Card.Header>
           <Stack direction="horizontal" gap={2}>
             <TiDelete onClick={triggerDelete} style={{color: "red", cursor:"pointer",fontSize:"25px"}}/>
-            {/* <Badge bg="secondary" className="ms-auto">
-              {soldAmount.toString()} Sold
-            </Badge> */}
           </Stack>
         </Card.Header>
-        <div className=" ratio ratio-4x3">
-          <img src={imageURL} alt={name} style={{ objectFit: "cover" }} />
-        </div>
         <Card.Body className="d-flex  flex-column text-center">
-  
-  {/* <div style={{ display:'flex',alignItems: "left" }}>
-    <FaHeart style={{ color: "red", cursor: "pointer", fontSize: '20px' }} onClick={triggerLike}/>
-    <span style={{ fontWeight: "bold" }}>{like}</span>
-  </div> */}
-      <Button variant="success" onClick={handleShow}>
-        View saloon details
-      </Button>
-      
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
         <div className=" ratio ratio-4x3">
           <img src={imageURL} alt={name} style={{ objectFit: "cover" }} />
         </div>
         <Card.Title>{name}</Card.Title>
-          
-            <div className="text-uppercase fw-bold text-secondary text-sm">Description: </div>
-            <span>{description}</span>    
-          <div>  
+          <div>
              <div className="text-uppercase fw-bold text-secondary">Location: </div>
              <span>{location} </span> 
           </div>
-                  
-          
           <Card.Text className="text-secondary">
             <span>{Principal.from(owner).toText()}</span>
           </Card.Text>
-         
-        </Modal.Body>
-        <Modal.Footer>
-         
-          {/* <Button
-            variant="outline-dark"
-            onClick={triggerBuy}
-            className="w-100 py-3"
-          >
-            Buy for {(price / BigInt(10**8)).toString()} ICP
-          </Button>
-          <Col>
-            <AddComment addComment={addComment} shoeId={id} /> 
-          </Col>
-      <div variant="success" style={{ color:"blue", cursor:"pointer"}}  onClick={handleShow1}>
-        <span>View comment</span>
-      </div>
-        <Modal show={show1} onHide={handleClose1} centered>
+          <InsertServices saloonId={id} />
+          <div variant="success" style={{ color:"blue", cursor:"pointer"}}  onClick={handleServiceShow}>
+        <span>View services</span>
+        </div>
+          <Modal show={serviceshow} onHide={handleServiceClose} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Comments</Modal.Title>
+                <Modal.Title>Services</Modal.Title>
             </Modal.Header>
                 <Modal.Body>
-                   <span>{comments}</span>
+                <ul>
+            {services.map((service) => (
+              <li key={service.id} style={{marginBottom: "2px"}}>
+                {service.name} {"   "}
+                {service.description}
+              </li>
+            ))}
+          </ul>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose1}>
+                    <Button variant="secondary" onClick={handleServiceClose}>
                         Close
                     </Button>
                    
                 </Modal.Footer>
-        </Modal>*/}
-        </Modal.Footer> 
-      </Modal>
- 
+        </Modal>
         </Card.Body>
       </Card>
     </Col>

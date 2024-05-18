@@ -8,13 +8,10 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-
-// Define record types for Shoe
 const ServiceRendered = Record({
     id: text,
-    serviceName: text,
-    serviceDescription: text,
-    serviceAmount: nat64, 
+    name: text,
+    description: text,
 });
 
 // Define record types for Shoe
@@ -42,9 +39,8 @@ const SaloonPayload = Record({
 
 // Define a shoe Payload record
 const ServiceRenderedPayload = Record({
-    serviceName: text,
-    serviceDescription: text, 
-    serviceAmount: nat64, 
+    name: text,
+    description: text, 
 });
 
 
@@ -60,9 +56,9 @@ const Message = Variant({
     // AlreadyLiked: text,
 });
 
-// Define a StableBTreeMap to store Saloon and Service rendered by their IDs
+// Define a StableBTreeMap to store Saloons and Services rendered by their IDs
 const saloonStorage = StableBTreeMap(0, text, Saloon); 
-const serviceStorage = StableBTreeMap(0, text, ServiceRendered);
+const serviceStorage = StableBTreeMap(1, text, ServiceRendered);
 
 
 
@@ -109,7 +105,7 @@ export default Canister({
     }
     ),
 
-      // Create an Ingredient
+      // Create a service
       addServices: update([ServiceRenderedPayload], Result(ServiceRendered, Message), (payload) => {
         if (typeof payload !== "object" || Object.keys(payload).length === 0) {
             return Err({ InvalidPayload: "invalid payoad" })
@@ -120,16 +116,31 @@ export default Canister({
     }
     ),
 
+     // Get all service
+     getServices: query([], Vec(ServiceRendered),() => {
+        return serviceStorage.values();
+    }),
+
+     // Get service by id
+     getService: query([text], Result(ServiceRendered, Message), (id) => {
+        const serviceOpt = serviceStorage.get(id);
+        if ("None" in serviceOpt) {
+            return Err({ NotFound: `service with id=${id} not found` });
+        }
+        return Ok(serviceOpt.Some);
+     }
+     ),
+
     
-    // insert an ingredient into a recipe
-    addServicesToSaloon: update([text, text], Result(Saloon, Message), (saloonId, serviceId) => {
+    // insert an service to a saloon
+    insertServicesToSaloon: update([text, text], Result(Saloon, Message), (saloonId, serviceId) => {
         const saloonOpt = saloonStorage.get(saloonId);
         if ("None" in saloonOpt) {
-            return Err({ NotFound: `cannot add ingredient to recipe: recipe with id=${saloonId} not found` });
+            return Err({ NotFound: `cannot add service to recipe: saloon with id=${saloonId} not found` });
         }
         const serviceOpt = serviceStorage.get(serviceId);
         if ("None" in serviceOpt) {
-            return Err({ NotFound: `cannot add ingredient to recipe: ingredient with id=${serviceId} not found` });
+            return Err({ NotFound: `cannot add service to saloon: service with id=${serviceId} not found` });
         }
         saloonOpt.Some.services.push(serviceOpt.Some);
         saloonStorage.insert(saloonId, saloonOpt.Some);
@@ -137,17 +148,14 @@ export default Canister({
     }
     ),
 
-    searchSaloon: query([text], Result(Vec(Saloon), Message), (searchTerm) => {
-        const lowerCaseSearchInput = searchTerm.toLowerCase();
-        try {
-            const searched = saloonStorage.values().filter((saloon) => saloon.name.toLowerCase().includes(lowerCaseSearchInput) ||
-             saloon.location.toLowerCase().includes(lowerCaseSearchInput));
-            return Ok(searched);
-        } catch (error) {
-            return Err({ NotFound: `Saloon with the term ${searchTerm} has not been found` });
-        }
-    }
-    ),
+   //query function that search for a shoe product by name
+    searchSaloons: query([text], Vec(Saloon), (name) => {
+     const saloons = saloonStorage.values();
+     return saloons.filter((saloons) =>
+        saloons.name.toLowerCase().includes(name.toLowerCase())
+    );
+    }),
+
 
   
 

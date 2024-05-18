@@ -5,7 +5,7 @@ import { login, logout as destroy } from "./utils/auth";
 import Cover from "./components/utils/Cover";
 import { Notification } from "./components/utils/Notifications";
 import Saloons from "./components/saloon/Saloons";
-import ShoeNav from "./components/NavBar";
+import Navigation from "./components/NavBar";
 // import Index from "./components/footer";
 
 
@@ -17,7 +17,7 @@ const App = function AppWrapper() {
             <Notification />
             {isAuthenticated ? (
                 <div>
-                     <ShoeNav />
+                     <Navigation />
                     <br /> 
                     <main>
                         <Saloons />

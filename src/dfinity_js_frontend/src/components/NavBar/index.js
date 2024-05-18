@@ -11,7 +11,7 @@ import { balance as principalBalance } from "../../utils/ledger"
 
 
 
- function ShoeNav(args) {
+ function Navigation(args) {
     const principal = window.auth.principalText;
     const isAuthenticated = window.auth.isAuthenticated;
     const [balance, setBalance] = useState("0");
@@ -30,7 +30,7 @@ import { balance as principalBalance } from "../../utils/ledger"
 
     return (
         <>
-        <Navbar expand="md" className="shadow">
+        <Navbar expand="md" className="" >
           <NavbarBrand style={{ fontWeight: 'bold', color: 'rgb(38, 69, 100)' }}>
             MISALOON
           </NavbarBrand>
@@ -50,4 +50,4 @@ import { balance as principalBalance } from "../../utils/ledger"
     );
 };
 
-export default ShoeNav;
+export default Navigation;
