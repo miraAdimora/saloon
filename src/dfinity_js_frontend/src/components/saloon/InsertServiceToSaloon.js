@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, Table } from "react-bootstrap";
 import {toast} from 'react-toastify';
-import { insertServicesToSaloon, getServices as getServicesList } from "../../utils/marketplace";
+import {FaTrash } from "react-icons/fa";
+import { insertServicesToSaloon, getServices as getServicesList, deleteService } from "../../utils/marketplace";
 import { NotificationError, NotificationSuccess } from "../utils/Notifications";
 
 
@@ -33,12 +34,25 @@ const InsertServices = ({saloonId}) => {
 
     const handleInsertService = async (serviceId) => {
         try {
+            // setLoading(true);
+            window.location.reload();
+            toast(<NotificationSuccess text="please wait your request is been processed." />);
             await insertServicesToSaloon(saloonId, serviceId);
             toast(<NotificationSuccess text="service Insert successfully." />);
 
         } catch (error) {
             console.log({ error });
             toast(<NotificationError text="service insert not successfully." />);
+        }
+    }
+    const handleDeleteService = async (serviceId) => {
+        try {
+            await deleteService(serviceId);
+            toast(<NotificationSuccess text="service delete successfully." />);
+
+        } catch (error) {
+            console.log({ error });
+            toast(<NotificationError text="service delete not successfully." />);
         }
     }
 
@@ -48,10 +62,11 @@ const InsertServices = ({saloonId}) => {
 
   return (
     <>
-    <Button variant="primary"       
+    <Button variant=""       
       className="mb-3"
+      style={{backgroundColor: "rgb(255, 0, 255)"}}
         onClick={handleShow}>
-        Insert Service to Saloon
+        <span style={{color: "white"}}>Insert Service to Saloon</span>
     </Button>
 
     <Modal show={show} onHide={handleClose}>
@@ -65,8 +80,6 @@ const InsertServices = ({saloonId}) => {
                         <th>#</th>
                         <th>Name</th>
                         <th>Description</th>
-                        {/* <th>Unit</th>
-                        <th>Action</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -83,6 +96,12 @@ const InsertServices = ({saloonId}) => {
                                 >
                                     Insert
                                 </Button>
+                                
+                            </td>
+                            <td className="">
+                             <FaTrash style={{color: "red", cursor:"pointer",fontSize:"19px"}} 
+                             onClick={() => handleDeleteService(service.id)}
+                             />
                             </td>
                         </tr>
                     ))}

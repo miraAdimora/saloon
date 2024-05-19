@@ -14,30 +14,31 @@ const ServiceRendered = Record({
     description: text,
 });
 
-// Define record types for Shoe
+// Define record types for saloon
 const Saloon = Record({
     id: text,
     name: text,
     location: text,
-    description: text,
+    // description: text,
     imageURL: text,
     owner: Principal,
+    like: int8,
     services: Vec(ServiceRendered),
 
 });
 
-// Define a shoe Payload record
+// saloon Payload
 const SaloonPayload = Record({
     name: text,
     location: text,
-    description: text,
+    // description: text,
     imageURL: text,
   
 });
 
 
 
-// Define a shoe Payload record
+//  service Payload record
 const ServiceRenderedPayload = Record({
     name: text,
     description: text, 
@@ -51,9 +52,6 @@ const Message = Variant({
     NotOwner:text,
     Owner: text,
     InvalidPayload: text,
-    // PaymentFailed: text,
-    // PaymentCompleted: text,
-    // AlreadyLiked: text,
 });
 
 // Define a StableBTreeMap to store Saloons and Services rendered by their IDs
@@ -73,7 +71,7 @@ export default Canister({
         if (typeof payload !== "object" || Object.keys(payload).length === 0) {
             return Err({ InvalidPayload: "invalid payload" })
         }
-        const saloon = { id: uuidv4(), owner: ic.caller(), services: [], ...payload };
+        const saloon = { id: uuidv4(), owner: ic.caller(), like:0, services: [], ...payload };
         saloonStorage.insert(saloon.id, saloon);
         return Ok(saloon);
     }
@@ -83,7 +81,7 @@ export default Canister({
     deleteSaloon: update([text], Result(Saloon, Message), (id) => {
         const deletedSaloonOpt = saloonStorage.get(id);
         if ("None" in deletedSaloonOpt) {
-            return Err({ NotFound: `cannot delete the recipe: recipe with id=${id} not found` });
+            return Err({ NotFound: `cannot delete the salon: saloon with id=${id} not found` });
         }
         saloonStorage.remove(id);
         return Ok(deletedSaloonOpt.Some);
@@ -99,7 +97,7 @@ export default Canister({
     getSaloon: query([text], Result(Saloon, Message), (id) => {
         const recipeOpt = saloonStorage.get(id);
         if ("None" in recipeOpt) {
-            return Err({ NotFound: `recipe with id=${id} not found` });
+            return Err({ NotFound: `saloon with id=${id} not found` });
         }
         return Ok(recipeOpt.Some);
     }
@@ -116,10 +114,23 @@ export default Canister({
     }
     ),
 
+        // Delete a service
+        deleteService: update([text], Result(ServiceRendered, Message), (id) => {
+            const deletedServiceOpt = serviceStorage.get(id);
+            if ("None" in deletedServiceOpt) {
+                return Err({ NotFound: `cannot delete the service: service with id=${id} not found` });
+            }
+            serviceStorage.remove(id);
+            return Ok(deletedServiceOpt.Some);
+        }
+        ),
+    
+
      // Get all service
      getServices: query([], Vec(ServiceRendered),() => {
         return serviceStorage.values();
-    }),
+     }),
+     
 
      // Get service by id
      getService: query([text], Result(ServiceRendered, Message), (id) => {
@@ -148,7 +159,21 @@ export default Canister({
     }
     ),
 
-   //query function that search for a shoe product by name
+    // Function that like a saloon 
+    likeSaloon: update([text], Result(Saloon, Message), (id) => {
+    const shoeOpt = saloonStorage.get(id);
+
+    if ("None" in shoeOpt) {
+        return Err({ NotFound: `cannot like the saloon: saloon with id=${id} not found` });
+    }
+    const saloon = shoeOpt.Some;
+    saloon.like += 1;
+
+    saloonStorage.insert(saloon.id, saloon)
+        return Ok(saloon);
+    }),
+
+   //function that search for a saloon by name
     searchSaloons: query([text], Vec(Saloon), (name) => {
      const saloons = saloonStorage.values();
      return saloons.filter((saloons) =>
@@ -157,17 +182,7 @@ export default Canister({
     }),
 
 
-  
-
-
-
-
-
-
-
- 
 })
-
 
 
 // a workaround to make uuid package work with Azle

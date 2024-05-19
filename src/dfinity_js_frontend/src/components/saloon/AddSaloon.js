@@ -6,9 +6,9 @@ const AddSaloon = ({ save }) => {
   const [name, setName] = useState("");
   const [imageURL, setImage] = useState("");
   const [location, setLocation] = useState("");
-  const [description, setDescription] = useState("");
+  // const [description, setDescription] = useState("");
 
-  const isFormFilled = () => name && imageURL && description && location ;
+  const isFormFilled = () => name && imageURL && location ;
 
   const [show, setShow] = useState(false);
 
@@ -57,7 +57,7 @@ const AddSaloon = ({ save }) => {
                 }}
               />
             </FloatingLabel>
-            <FloatingLabel
+            {/* <FloatingLabel
               controlId="inputDescription"
               label="Description"
               className="mb-3"
@@ -70,7 +70,7 @@ const AddSaloon = ({ save }) => {
                   setDescription(e.target.value);
                 }}
               />
-            </FloatingLabel>
+            </FloatingLabel> */}
             <FloatingLabel
               controlId="inputLocation"
               label="Location"
@@ -97,7 +97,6 @@ const AddSaloon = ({ save }) => {
               save({
                 name,
                 imageURL,
-                description,
                 location,
               });
               handleClose();

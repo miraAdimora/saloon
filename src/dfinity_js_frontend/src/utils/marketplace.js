@@ -1,17 +1,17 @@
 import { Principal } from "@dfinity/principal";
 import { transferICP } from "./ledger";
 
-// add shoe to the store
+// add saloon
 export async function createSaloon(saloon) {
     return window.canister.marketplace.addSaloon(saloon);
 }
 
-// delete shoe by the shoe id
+// delete saloon
 export async function deleteSaloon(id) {
     return window.canister.marketplace.deleteSaloon(id);
 }
 
-// searchRecipes
+// search Saloon
 export async function searchSaloons(query) {
     return window.canister.marketplace.searchSaloons(query);
   }
@@ -26,31 +26,23 @@ export async function getServices() {
     return await window.canister.marketplace.getServices();
   }
 
+
+  // delete service 
+export async function deleteService(id) {
+  return window.canister.marketplace.deleteService(id);
+}
+
  // add Service To saloon
 export async function insertServicesToSaloon(saloonId, serviceId) {
     return window.canister.marketplace.insertServicesToSaloon(saloonId, serviceId);
   } 
 
-// // like a shoe
-// export async function likeShoe(id) {
-//     return window.canister.marketplace.likeShoe(id);
-// }
+  // like a saloon
+export async function likeSaloon(id) {
+  return window.canister.marketplace.likeSaloon(id);
+}
 
-// // getNoOfShoes
-// export async function getNoOfShoes() {
-//     return window.canister.marketplace.getNoOfShoes();
-//   }
-
-  //addComment
-// export async function insertComment(id,comment) {
-//     return window.canister.marketplace.insertComment(id,comment);
-//   }
-// //getComment
-// export async function getComments() {
-//     return window.canister.marketplace.getComments();
-//   }
-
-//getShoe
+//get Saloon
 export async function getSaloons() {
     try {
         return await window.canister.marketplace.getSaloons();
@@ -63,7 +55,7 @@ export async function getSaloons() {
     }
 }
 
-// export async function buyShoe(shoe) {
+// export async function buyProduct(product) {
 //     const marketplaceCanister = window.canister.marketplace;
 //     const orderResponse = await marketplaceCanister.createOrder(shoe.id);
 //     const sellerPrincipal = Principal.from(orderResponse.Ok.seller);

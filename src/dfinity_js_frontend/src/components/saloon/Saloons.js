@@ -7,7 +7,7 @@ import AddSaloon from "./AddSaloon";
 import { FaSearch } from "react-icons/fa";
 import { NotificationSuccess, NotificationError } from "../utils/Notifications";
 import {
-  getSaloons as getSaloonList, createSaloon, createService, deleteSaloon, getServices as getServicesList
+  getSaloons as getSaloonList,getServices as getServicesList, createSaloon, createService, deleteSaloon,likeSaloon
 } from "../../utils/marketplace";
 import AddService from "../servicesRendered/AddService";
 
@@ -73,6 +73,20 @@ const Saloons = () => {
     } catch (error) {
       console.log({ error });
       toast(<NotificationError text="Failed to create a shoe." />);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+   // function that likes a saloon
+   const likesSaloon = async (id) => {
+    try {
+      likeSaloon(id).then((resp) => {
+        toast(<NotificationSuccess text="Shoe liked successfully." />);
+        getSaloon();
+      });
+    } catch (error) {
+      console.log({ error });
     } finally {
       setLoading(false);
     }
@@ -144,7 +158,7 @@ const Saloons = () => {
                   ..._saloon,
                 }}
                 deleteSaloonId = {deleteSaloonId}
-                // likeShoes = {likeShoes}
+                likesSaloon = {likesSaloon}
               />    
               </div>
               
