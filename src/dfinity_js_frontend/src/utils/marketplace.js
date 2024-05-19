@@ -57,9 +57,9 @@ export async function getSaloons() {
 
 // export async function buyProduct(product) {
 //     const marketplaceCanister = window.canister.marketplace;
-//     const orderResponse = await marketplaceCanister.createOrder(shoe.id);
+//     const orderResponse = await marketplaceCanister.createOrder(product.id);
 //     const sellerPrincipal = Principal.from(orderResponse.Ok.seller);
 //     const sellerAddress = await marketplaceCanister.getAddressFromPrincipal(sellerPrincipal);
 //     const block = await transferICP(sellerAddress, orderResponse.Ok.price, orderResponse.Ok.memo);
-//     await marketplaceCanister.completePurchase(sellerPrincipal, shoe.id, orderResponse.Ok.price, block, orderResponse.Ok.memo);
+//     await marketplaceCanister.completePurchase(sellerPrincipal, product.id, orderResponse.Ok.price, block, orderResponse.Ok.memo);
 // }

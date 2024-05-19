@@ -19,7 +19,6 @@ const Saloon = Record({
     id: text,
     name: text,
     location: text,
-    // description: text,
     imageURL: text,
     owner: Principal,
     like: int8,
@@ -31,7 +30,6 @@ const Saloon = Record({
 const SaloonPayload = Record({
     name: text,
     location: text,
-    // description: text,
     imageURL: text,
   
 });

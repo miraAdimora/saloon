@@ -57,20 +57,6 @@ const AddSaloon = ({ save }) => {
                 }}
               />
             </FloatingLabel>
-            {/* <FloatingLabel
-              controlId="inputDescription"
-              label="Description"
-              className="mb-3"
-            >
-              <Form.Control
-                as="textarea"
-                placeholder="description"
-                style={{ height: "80px" }}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-              />
-            </FloatingLabel> */}
             <FloatingLabel
               controlId="inputLocation"
               label="Location"
