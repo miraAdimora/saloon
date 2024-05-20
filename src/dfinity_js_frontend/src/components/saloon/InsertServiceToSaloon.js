@@ -34,7 +34,7 @@ const InsertServices = ({saloonId}) => {
 
     const handleInsertService = async (serviceId) => {
         try {
-            // setLoading(true);
+            setLoading(true);
             window.location.reload();
             toast(<NotificationSuccess text="please wait your request is been processed." />);
             await insertServicesToSaloon(saloonId, serviceId);
@@ -47,6 +47,7 @@ const InsertServices = ({saloonId}) => {
     }
     const handleDeleteService = async (serviceId) => {
         try {
+            window.location.reload();
             await deleteService(serviceId);
             toast(<NotificationSuccess text="service delete successfully." />);
 

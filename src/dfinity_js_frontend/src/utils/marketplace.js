@@ -18,7 +18,7 @@ export async function searchSaloons(query) {
 
 // add service
 export async function createService(service) {
-    return window.canister.marketplace.addServices(service);
+    return window.canister.marketplace.addService(service);
   }  
 
   // get services

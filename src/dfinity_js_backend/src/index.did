@@ -1,13 +1,16 @@
 service: () -> {
-    addSaloon: (record {name:text; imageURL:text; location:text}) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text; Owner:text}});
-    addServices: (record {name:text; description:text}) -> (variant {Ok:record {id:text; name:text; description:text}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text; Owner:text}});
-    deleteSaloon: (text) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text; Owner:text}});
-    deleteService: (text) -> (variant {Ok:record {id:text; name:text; description:text}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text; Owner:text}});
-    getSaloon: (text) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text; Owner:text}}) query;
+    addSaloon: (record {name:text; imageURL:text; location:text}) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}});
+    addService: (record {name:text; description:text}) -> (variant {Ok:record {id:text; name:text; description:text}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}});
+    deleteSaloon: (text) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}});
+    deleteService: (text) -> (variant {Ok:record {id:text; name:text; description:text}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}});
+    getSaloon: (text) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}}) query;
     getSaloons: () -> (vec record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}) query;
-    getService: (text) -> (variant {Ok:record {id:text; name:text; description:text}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text; Owner:text}}) query;
+    getService: (text) -> (variant {Ok:record {id:text; name:text; description:text}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}}) query;
     getServices: () -> (vec record {id:text; name:text; description:text}) query;
-    insertServicesToSaloon: (text, text) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text; Owner:text}});
-    likeSaloon: (text) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text; Owner:text}});
+    insertServicesToSaloon: (text, text) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}});
+    likeSaloon: (text) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}});
     searchSaloons: (text) -> (vec record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}) query;
+    searchServices: (text) -> (vec record {id:text; name:text; description:text}) query;
+    updateSaloon: (text, record {name:text; imageURL:text; location:text}) -> (variant {Ok:record {id:text; owner:principal; like:int8; name:text; imageURL:text; location:text; services:vec record {id:text; name:text; description:text}}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}});
+    updateService: (text, record {name:text; description:text}) -> (variant {Ok:record {id:text; name:text; description:text}; Err:variant {InvalidPayload:text; NotFound:text; NotOwner:text}});
 }

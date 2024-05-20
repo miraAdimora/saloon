@@ -39,34 +39,25 @@ const Message = Variant({
     InvalidPayload: text,
 });
 
+
 // Define StableBTreeMaps to store Saloons and Services rendered by their IDs
 const saloonStorage = StableBTreeMap(0, text, Saloon); 
 const serviceStorage = StableBTreeMap(1, text, ServiceRendered);
 
+
 // Define the Ledger canister
 const icpCanister = Ledger(Principal.fromText("ryjl3-tyaaa-aaaaa-aaaba-cai"));
 
-// Helper function to validate saloon payload
-const validateSaloonPayload = (payload: typeof SaloonPayload): boolean => {
-    return payload.name !== "" && payload.location !== "" && payload.imageURL !== "";
-}
-
-// Helper function to validate service payload
-const validateServicePayload = (payload: typeof ServiceRenderedPayload): boolean => {
-    return payload.name !== "" && payload.description !== "";
-}
 
 // Define the canister interface
 export default Canister({
     // Create a Saloon
     addSaloon: update([SaloonPayload], Result(Saloon, Message), (payload) => {
-        if (!validateSaloonPayload(payload)) {
-            return Err({ InvalidPayload: "Invalid payload" });
-        }
         const saloon = { id: uuidv4(), owner: ic.caller(), like: 0, services: [], ...payload };
         saloonStorage.insert(saloon.id, saloon);
         return Ok(saloon);
     }),
+
 
     // Delete a saloon by id
     deleteSaloon: update([text], Result(Saloon, Message), (id) => {
@@ -94,9 +85,6 @@ export default Canister({
 
     // Create a service
     addService: update([ServiceRenderedPayload], Result(ServiceRendered, Message), (payload) => {
-        if (!validateServicePayload(payload)) {
-            return Err({ InvalidPayload: "Invalid payload" });
-        }
         const service = { id: uuidv4(), ...payload };
         serviceStorage.insert(service.id, service);
         return Ok(service);
@@ -127,7 +115,7 @@ export default Canister({
     }),
 
     // Insert a service into a saloon
-    insertServiceToSaloon: update([text, text], Result(Saloon, Message), (saloonId, serviceId) => {
+    insertServicesToSaloon: update([text, text], Result(Saloon, Message), (saloonId, serviceId) => {
         const saloonOpt = saloonStorage.get(saloonId);
         if ("None" in saloonOpt) {
             return Err({ NotFound: `Cannot add service to saloon: saloon with id=${saloonId} not found` });
@@ -171,9 +159,6 @@ export default Canister({
 
     // Function to update saloon details
     updateSaloon: update([text, SaloonPayload], Result(Saloon, Message), (id, payload) => {
-        if (!validateSaloonPayload(payload)) {
-            return Err({ InvalidPayload: "Invalid payload" });
-        }
         const saloonOpt = saloonStorage.get(id);
         if ("None" in saloonOpt) {
             return Err({ NotFound: `Saloon with id=${id} not found` });
@@ -185,9 +170,6 @@ export default Canister({
 
     // Function to update service details
     updateService: update([text, ServiceRenderedPayload], Result(ServiceRendered, Message), (id, payload) => {
-        if (!validateServicePayload(payload)) {
-            return Err({ InvalidPayload: "Invalid payload" });
-        }
         const serviceOpt = serviceStorage.get(id);
         if ("None" in serviceOpt) {
             return Err({ NotFound: `Service with id=${id} not found` });
@@ -198,10 +180,12 @@ export default Canister({
     }),
 });
 
-// A workaround to make uuid package work with Azle
+
+// a workaround to make uuid package work with Azle
 globalThis.crypto = {
     // @ts-ignore
-    getRandomValues: (array) => {
+    getRandomValues: () => {
+        let array = new Uint8Array(32);
         for (let i = 0; i < array.length; i++) {
             array[i] = Math.floor(Math.random() * 256);
         }
