@@ -149,14 +149,6 @@ export default Canister({
         );
     }),
 
-    // Function to search for a service by name
-    searchServices: query([text], Vec(ServiceRendered), (name) => {
-        const services = serviceStorage.values();
-        return services.filter((service) =>
-            service.name.toLowerCase().includes(name.toLowerCase())
-        );
-    }),
-
     // Function to update saloon details
     updateSaloon: update([text, SaloonPayload], Result(Saloon, Message), (id, payload) => {
         const saloonOpt = saloonStorage.get(id);
