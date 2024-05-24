@@ -61,8 +61,7 @@ const Message = Variant({
 const saloonStorage = StableBTreeMap(0, text, Saloon);
 const serviceStorage = StableBTreeMap(1, text, ServiceRendered);
 
-// Define the Ledger canister
-// const icpCanister = Ledger(Principal.fromText("ryjl3-tyaaa-aaaaa-aaaba-cai"));
+
 
 // Define the canister interface
 export default Canister({
@@ -127,10 +126,7 @@ export default Canister({
   }),
 
   // Create a service
-  addService: update(
-    [ServiceRenderedPayload],
-    Result(ServiceRendered, Message),
-    (payload) => {
+  addService: update([ServiceRenderedPayload],Result(ServiceRendered, Message),(payload) => {
       // @ts-ignore
       const validatePayloadErrors = validateServiceRenderedPayload(payload);
       if (validatePayloadErrors.length) {
@@ -161,6 +157,7 @@ export default Canister({
     return Ok(deletedServiceOpt.Some);
   }),
 
+
   // Get all services
   getServices: query([], Vec(ServiceRendered), () => {
     return serviceStorage.values();
@@ -181,10 +178,7 @@ export default Canister({
   }),
 
   // Insert a service into a saloon
-  insertServicesToSaloon: update(
-    [text, text],
-    Result(Saloon, Message),
-    (saloonId, serviceId) => {
+  insertServicesToSaloon: update([text, text],Result(Saloon, Message),(saloonId, serviceId) => {
       if (!isValidUuid(saloonId)) {
         return Err({
           InvalidPayload: `saloonId=${saloonId} is not in the valid uuid format.`,

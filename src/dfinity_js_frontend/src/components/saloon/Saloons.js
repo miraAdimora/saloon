@@ -82,7 +82,6 @@ const Saloons = () => {
    const likesSaloon = async (id) => {
     try {
       likeSaloon(id).then((resp) => {
-        toast(<NotificationSuccess text="Shoe liked successfully." />);
         getSaloon();
       });
     } catch (error) {
